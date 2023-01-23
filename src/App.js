@@ -1,6 +1,6 @@
 import './App.css';
-import { useSelector, useDispatch, connect } from 'react-redux'
-import { clearData, fetchData, incrementId, decrementId, inputId } from './features/dataSlice'
+import { useDispatch, useSelector, connect } from 'react-redux';
+import { fetchData, incrementId, decrementId, customId, clearData } from './ducks/dataSlice'
 import { useEffect } from 'react';
 
 function App(props) {
@@ -17,8 +17,7 @@ function App(props) {
 
   useEffect(() => {
     dispatch(fetchData())
-  }, [props.objectId, dispatch])
-
+}, [props.objectId, dispatch])
 
   return (
     <div className="App">
@@ -29,7 +28,7 @@ function App(props) {
         <button onClick={() => dispatch(decrementId())}>Back</button>
       </div>
       <input value={ data.objectId } onChange={(e) => {
-        dispatch(inputId(Number(e.target.value)))
+        dispatch(customId(Number(e.target.value)))
       }} />
       <div>
         {data.objectId}
@@ -39,7 +38,8 @@ function App(props) {
   );
 }
 
+const mapStateToProps = (state) => ({
+  objectId: state.data.objectId
+})
 
-const mapStateToProps = (state, ownProps) => ({ objectId: state.data.objectId })
-
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps) (App)
